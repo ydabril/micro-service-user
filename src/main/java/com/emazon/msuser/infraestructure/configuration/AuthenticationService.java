@@ -1,0 +1,39 @@
+package com.emazon.msuser.infraestructure.configuration;
+
+import com.emazon.msuser.adapters.driving.http.dto.request.AuthRequest;
+import com.emazon.msuser.adapters.driving.http.dto.response.AuthResponse;
+import com.emazon.msuser.infraestructure.configuration.jwt.JwtService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Service;
+
+@Service
+@RequiredArgsConstructor
+public class AuthenticationService {
+    private final JwtService jwtService;
+    private final AuthenticationManager authenticationManager;
+
+    public AuthResponse authenticate(AuthRequest request) {
+        try {
+            Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(
+                            request.getEmail(),
+                            request.getPassword()
+                    )
+            );
+
+            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+            String jwtToken = jwtService.generateToken(userDetails);
+
+            return AuthResponse.builder()
+                    .token(jwtToken)
+                    .build();
+        } catch (AuthenticationException e) {
+            throw new IllegalArgumentException("Invalid credentials", e);
+        }
+    }
+}
