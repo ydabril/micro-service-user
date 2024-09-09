@@ -43,8 +43,8 @@ public class UserRestController {
                     content = @Content(mediaType = "application/json"))
     })
     @PostMapping("/create-user")
-    public ResponseEntity<Void> createUser(@Valid @RequestBody UserRequest request) {
-        userServicePort.createUser(userRequestMapper.toUserModel(request));
+    public ResponseEntity<Void> createAuxUser(@Valid @RequestBody UserRequest request) {
+        userServicePort.createAuxUser(userRequestMapper.toUserModel(request));
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 }
