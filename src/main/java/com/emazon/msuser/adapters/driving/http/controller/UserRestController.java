@@ -35,6 +35,10 @@ public class UserRestController {
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = UserRequest.class))),
             @ApiResponse(responseCode = "400", description = "Solicitud inválida, error de validación",
                     content = @Content(mediaType = "application/json")),
+            @ApiResponse(responseCode = "401", description = "Acceso no autorizado",
+                    content = @Content(mediaType = "application/json")),
+            @ApiResponse(responseCode = "403", description = "Acceso prohibido",
+                    content = @Content(mediaType = "application/json")),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor",
                     content = @Content(mediaType = "application/json"))
     })
