@@ -7,7 +7,7 @@ import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
 public interface UserRequestMapper {
-    @Mapping(source = "roleId", target = "role.id")
+    @Mapping(target = "role.id", constant = "1L")
     @Mapping(target = "role.name", constant = "name")
     @Mapping(target = "role.description", constant = "description")
     User toUserModel(UserRequest userRequest);

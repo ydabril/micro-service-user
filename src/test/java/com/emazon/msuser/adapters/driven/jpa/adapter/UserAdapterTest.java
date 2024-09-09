@@ -44,7 +44,7 @@ public class UserAdapterTest {
     void saveArticleShouldSaveArticle() {
         when(userEntityMapper.toUserEntity(user)).thenReturn(userEntity);
 
-        userAdapter.createUser(user);
+        userAdapter.createAuxUser(user);
 
         verify(userRepository).save(userEntity);
     }

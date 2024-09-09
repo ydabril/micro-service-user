@@ -19,7 +19,7 @@ public class UserAdapter implements UserPersistencePort {
     private final UserEntityMapper userEntityMapper;
 
     @Override
-    public void createUser(User user) {
+    public void createAuxUser(User user) {
         userRepository.save(userEntityMapper.toUserEntity(user));
     }
 

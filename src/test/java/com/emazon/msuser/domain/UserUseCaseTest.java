@@ -39,8 +39,8 @@ public class UserUseCaseTest {
         when(userPersistencePort.getUserByEmail("email@email.com")).thenReturn(Optional.empty());
         when(userPersistencePort.getUserByDocument("0000000000")).thenReturn(Optional.empty());
 
-        userUseCase.createUser(user);
-        verify(userPersistencePort).createUser(any());
+        userUseCase.createAuxUser(user);
+        verify(userPersistencePort).createAuxUser(any());
     }
 
     @Test
@@ -49,8 +49,8 @@ public class UserUseCaseTest {
         when(userPersistencePort.getUserByEmail("email@email.com")).thenReturn(Optional.of(user));
         when(userPersistencePort.getUserByDocument("0000000000")).thenReturn(Optional.empty());
         assertThrows(MailAlreadyExistsException.class,
-                () -> userUseCase.createUser(user));
-        verify(userPersistencePort, times(0)).createUser(any());
+                () -> userUseCase.createAuxUser(user));
+        verify(userPersistencePort, times(0)).createAuxUser(any());
     }
 
     @Test
@@ -59,8 +59,8 @@ public class UserUseCaseTest {
         when(userPersistencePort.getUserByEmail("email@email.com")).thenReturn(Optional.empty());
         when(userPersistencePort.getUserByDocument("0000000000")).thenReturn(Optional.of(user));
         assertThrows(UserAlreadyExistsException.class,
-                () -> userUseCase.createUser(user));
-        verify(userPersistencePort, times(0)).createUser(any());
+                () -> userUseCase.createAuxUser(user));
+        verify(userPersistencePort, times(0)).createAuxUser(any());
     }
 
     @Test
@@ -69,7 +69,7 @@ public class UserUseCaseTest {
         when(userPersistencePort.getUserByEmail("email@email.com")).thenReturn(Optional.empty());
         when(userPersistencePort.getUserByDocument("0000000000")).thenReturn(Optional.empty());
         assertThrows(AgeValidationException.class,
-                () -> userUseCase.createUser(user));
-        verify(userPersistencePort, times(0)).createUser(any());
+                () -> userUseCase.createAuxUser(user));
+        verify(userPersistencePort, times(0)).createAuxUser(any());
     }
 }
