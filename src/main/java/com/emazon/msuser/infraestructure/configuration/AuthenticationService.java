@@ -19,7 +19,6 @@ public class AuthenticationService {
     private final AuthenticationManager authenticationManager;
 
     public ResponseEntity<AuthResponse> authenticate(AuthRequest request) {
-        try {
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
                             request.getEmail(),
@@ -31,8 +30,6 @@ public class AuthenticationService {
             String jwtToken = jwtService.generateToken(userDetails);
 
             return ResponseEntity.ok(new AuthResponse(jwtToken));
-        } catch (BadCredentialsException ex) {
-            throw new BadCredentialsException("Invalid email or password");
-        }
+
     }
 }

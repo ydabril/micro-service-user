@@ -4,4 +4,5 @@ import com.emazon.msuser.domain.model.User;
 
 public interface IUserServicePort {
     void createAuxUser(User user);
+    void createClientUser(User user);
 }

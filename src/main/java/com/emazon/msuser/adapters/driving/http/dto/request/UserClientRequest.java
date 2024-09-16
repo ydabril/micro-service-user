@@ -12,7 +12,7 @@ import java.time.LocalDate;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserRequest {
+public class UserClientRequest {
     @NotBlank(message = "First name must not be empty")
     private String firstName;
 

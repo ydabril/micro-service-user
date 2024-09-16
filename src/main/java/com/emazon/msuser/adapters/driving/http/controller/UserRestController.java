@@ -42,9 +42,29 @@ public class UserRestController {
             @ApiResponse(responseCode = "500", description = "Error interno del servidor",
                     content = @Content(mediaType = "application/json"))
     })
-    @PostMapping("/create-user")
+    @PostMapping("/create-aux-user")
     public ResponseEntity<Void> createAuxUser(@Valid @RequestBody UserRequest request) {
         userServicePort.createAuxUser(userRequestMapper.toUserModel(request));
+        return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @Operation(summary = "Crear un nuevo usuario cliente", description = "Crea un nuevo usuario cliente en el sistema con los detalles proporcionados.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Cliente creado exitosamente",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = UserRequest.class))),
+            @ApiResponse(responseCode = "400", description = "Cliente inválida, error de validación",
+                    content = @Content(mediaType = "application/json")),
+            @ApiResponse(responseCode = "401", description = "Acceso no autorizado",
+                    content = @Content(mediaType = "application/json")),
+            @ApiResponse(responseCode = "403", description = "Acceso prohibido",
+                    content = @Content(mediaType = "application/json")),
+            @ApiResponse(responseCode = "500", description = "Error interno del servidor",
+                    content = @Content(mediaType = "application/json"))
+    })
+    @PostMapping("/create-client-user")
+    public ResponseEntity<Void> createCLientUser(@Valid @RequestBody UserRequest request) {
+        userServicePort.createClientUser(userRequestMapper.toUserModel(request));
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 }

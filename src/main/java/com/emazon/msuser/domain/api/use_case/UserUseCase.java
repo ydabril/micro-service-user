@@ -24,6 +24,21 @@ public class UserUseCase implements IUserServicePort {
         role.setId(Constants.AUX_ROLE);
         user.setRole(role);
 
+        validaUser(user);
+        userPersistencePort.createAuxUser(user);
+    }
+
+    @Override
+    public void createClientUser(User user) {
+        Role role = new Role();
+        role.setId(Constants.CLIENT_ROLE);
+        user.setRole(role);
+
+        validaUser(user);
+        userPersistencePort.createAuxUser(user);
+    }
+
+    private void validaUser(User user) {
         if (userPersistencePort.getUserByDocument(user.getDocumentNumber()).isPresent()) {
             throw new UserAlreadyExistsException();
         }
@@ -31,12 +46,11 @@ public class UserUseCase implements IUserServicePort {
             throw new MailAlreadyExistsException();
         }
 
-        validateAge(user.getBirthdate());
-
         user.setPassword(userPersistencePort.getPasswordEncrypt(
                 user.getPassword()
         ));
-        userPersistencePort.createAuxUser(user);
+
+        validateAge(user.getBirthdate());
     }
 
     private void validateAge(LocalDate birthdate) {
