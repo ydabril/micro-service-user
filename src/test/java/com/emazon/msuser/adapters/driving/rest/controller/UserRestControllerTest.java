@@ -35,7 +35,7 @@ public class UserRestControllerTest {
     }
 
     @Test
-    void saveArticleTest() {
+    void createAuxUserTest() {
         UserRequest userRequest = new UserRequest("name", "lastname", "0000000000",  "+5555555555555", LocalDate.of(1,1,1), "email@email.com", "password");
         User user = new User(1L, "name", "lastname", "0000000000",  "+5555555555555", LocalDate.of(1,1,1), "email@email.com", "password", null);
 
@@ -45,5 +45,18 @@ public class UserRestControllerTest {
 
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
         verify(userServicePort, times(1)).createAuxUser(any(User.class));
+    }
+
+    @Test
+    void createClientUserTest() {
+        UserRequest userRequest = new UserRequest("name", "lastname", "0000000000",  "+5555555555555", LocalDate.of(1,1,1), "email@email.com", "password");
+        User user = new User(1L, "name", "lastname", "0000000000",  "+5555555555555", LocalDate.of(1,1,1), "email@email.com", "password", null);
+
+        when(userRequestMapper.toUserModel(any(UserRequest.class))).thenReturn(user);
+        doNothing().when(userServicePort).createClientUser(any(User.class));
+        ResponseEntity<?> response = userController.createClientUser(userRequest);
+
+        assertEquals(HttpStatus.CREATED, response.getStatusCode());
+        verify(userServicePort, times(1)).createClientUser(any(User.class));
     }
 }

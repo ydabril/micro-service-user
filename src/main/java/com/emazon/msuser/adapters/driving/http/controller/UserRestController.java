@@ -13,10 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -28,7 +25,7 @@ public class UserRestController {
     private final UserRequestMapper userRequestMapper;
     private final IUserServicePort userServicePort;
 
-    @PreAuthorize("hasRole('ADMIN')")
+
     @Operation(summary = "Crear un nuevo usuario", description = "Crea un nuevo usuario en el sistema con los detalles proporcionados.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Empleado creado exitosamente",
@@ -48,7 +45,6 @@ public class UserRestController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Crear un nuevo usuario cliente", description = "Crea un nuevo usuario cliente en el sistema con los detalles proporcionados.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Cliente creado exitosamente",
@@ -62,8 +58,8 @@ public class UserRestController {
             @ApiResponse(responseCode = "500", description = "Error interno del servidor",
                     content = @Content(mediaType = "application/json"))
     })
-    @PostMapping("/create-client-user")
-    public ResponseEntity<Void> createCLientUser(@Valid @RequestBody UserRequest request) {
+    @PostMapping("/register-client")
+    public ResponseEntity<Void> createClientUser(@Valid @RequestBody UserRequest request) {
         userServicePort.createClientUser(userRequestMapper.toUserModel(request));
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }

@@ -20,22 +20,22 @@ public class UserUseCase implements IUserServicePort {
     }
     @Override
     public void createAuxUser(User user) {
-        Role role = new Role();
-        role.setId(Constants.AUX_ROLE);
-        user.setRole(role);
-
+        addRole(user, Constants.AUX_ROLE);
         validaUser(user);
         userPersistencePort.createAuxUser(user);
     }
 
     @Override
     public void createClientUser(User user) {
-        Role role = new Role();
-        role.setId(Constants.CLIENT_ROLE);
-        user.setRole(role);
-
+        addRole(user, Constants.CLIENT_ROLE);
         validaUser(user);
         userPersistencePort.createAuxUser(user);
+    }
+
+    private void addRole(User user, Long userRole) {
+        Role role = new Role();
+        role.setId(userRole);
+        user.setRole(role);
     }
 
     private void validaUser(User user) {

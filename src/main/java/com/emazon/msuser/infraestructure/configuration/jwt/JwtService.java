@@ -1,5 +1,7 @@
 package com.emazon.msuser.infraestructure.configuration.jwt;
 
+import com.emazon.msuser.adapters.driven.jpa.mysql.entity.UserEntity;
+import com.emazon.msuser.infraestructure.configuration.ConfigurationConstants;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -26,16 +28,23 @@ public class JwtService {
 
     public String generateToken(@NotNull UserDetails userDetails) {
         Map<String, Object> extraClaims = new HashMap<>();
+
         String authorities = userDetails.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.joining(","));
         extraClaims.put("authorities", authorities);
+
+        Long userId = ((UserEntity) userDetails).getId();
+        String name = ((UserEntity) userDetails).getFirstName();
+        extraClaims.put("userId", userId);
+        extraClaims.put("name", name);
+
         return Jwts
                 .builder()
                 .setClaims(extraClaims)
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 24))
+                .setExpiration(new Date(System.currentTimeMillis() + ConfigurationConstants.TIME_IN_MS))
                 .signWith(getSignInKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
